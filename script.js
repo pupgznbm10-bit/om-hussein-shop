@@ -2,9 +2,10 @@ const STORAGE_KEY = 'am-hussein-cart';
 const LAST_ORDER_KEY = 'am-hussein-last-order';
 const API_ENDPOINT = '/api/order';
 
-// Direct frontend Telegram (insecure: token visible to clients)
-// If you choose to send orders directly from the browser, put your bot token and chat id here.
-// WARNING: embedding the bot token in frontend code is insecure and exposes the token publicly.
+// Choose the delivery mode.
+// 'server' is the recommended mode because it keeps the bot token off the browser and avoids CORS issues.
+// 'direct' can be used for testing only; it makes the bot token visible to all users in the browser.
+const TELEGRAM_MODE = 'server';
 const TELEGRAM_BOT_TOKEN = 'REPLACE_WITH_BOT_TOKEN';
 const TELEGRAM_CHAT_ID = 'REPLACE_WITH_CHAT_ID';
 
@@ -245,9 +246,7 @@ const saveLastOrder = (customerName, total, items) => {
 };
 
 const submitOrderToTelegram = async (payload) => {
-  // If TELEGRAM_BOT_TOKEN and TELEGRAM_CHAT_ID are set, attempt to send directly to Telegram API
-  if (TELEGRAM_BOT_TOKEN && TELEGRAM_CHAT_ID) {
-    // Telegram has a message length limit (~4096 chars). Truncate defensively.
+  if (TELEGRAM_MODE === 'direct' && TELEGRAM_BOT_TOKEN && TELEGRAM_CHAT_ID && TELEGRAM_BOT_TOKEN !== 'REPLACE_WITH_BOT_TOKEN' && TELEGRAM_CHAT_ID !== 'REPLACE_WITH_CHAT_ID') {
     const text = String(payload).slice(0, 4000);
     const url = `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`;
 
@@ -271,7 +270,6 @@ const submitOrderToTelegram = async (payload) => {
     return response.json();
   }
 
-  // Fallback to server endpoint if no token/chat provided
   const response = await fetch(API_ENDPOINT, {
     method: 'POST',
     headers: {
