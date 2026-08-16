@@ -242,20 +242,26 @@ async function submitOrderToTelegram(orderDetails) {
     try {
         const response = await fetch('/api/send-order', {
             method: 'POST',
-            headers: { 
-                'Content-Type': 'application/json' 
+            headers: {
+                'Content-Type': 'application/json'
             },
             body: JSON.stringify({ message: orderDetails })
         });
 
+        const data = await response.json().catch(() => ({}));
+
         if (response.ok) {
             alert('تم إرسال الطلب بنجاح!');
-        } else {
-            alert('حدث خطأ أثناء إرسال الطلب. يرجى المحاولة مرة أخرى.');
+            return { ok: true, ...data };
         }
+
+        console.error('Order submit failed:', data);
+        alert('حدث خطأ أثناء إرسال الطلب. يرجى المحاولة مرة أخرى.');
+        return { ok: false, ...data };
     } catch (error) {
         console.error('Error:', error);
         alert('حدث خطأ في الاتصال بالشبكة.');
+        return { ok: false, error: error.message };
     }
 }
 
@@ -323,12 +329,12 @@ ${itemsText}
     try {
       const result = await submitOrderToTelegram(message);
 
-      if (result.ok) {
+      if (result?.ok) {
         saveLastOrder(name, total, cart);
         clearCart();
         window.location.href = 'success.html';
       } else {
-        throw new Error(result.description || 'فشل إرسال الطلب');
+        throw new Error(result?.description || result?.error || 'فشل إرسال الطلب');
       }
     } catch (error) {
       alert('حدث خطأ أثناء إرسال الطلب. يرجى المحاولة مرة أخرى.');
