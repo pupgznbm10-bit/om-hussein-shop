@@ -238,27 +238,33 @@ const saveLastOrder = (customerName, total, items) => {
   }));
 };
 
-async function submitOrderToTelegram(orderDetails) {
+async function submitOrderToTelegram(orderDetails, customerName, customerEmail, total) {
     try {
         const response = await fetch('/api/send-order', {
             method: 'POST',
-            headers: { 
-                'Content-Type': 'application/json' 
+        headers: {
+            'Content-Type': 'application/json'
             },
-            body: JSON.stringify({ message: orderDetails })
-        });
+        body: JSON.stringify({
+            message: orderDetails,
+            customerName,
+            customerEmail,
+            orderTotal: total,
+            orderDetails: orderDetails
+        })
+    });
 
-        const data = await response.json();
+    const data = await response.json();
 
-        if (response.ok && data.success) {
-            alert('تم إرسال الطلب بنجاح!');
-        } else {
-            alert('حدث خطأ أثناء إرسال الطلب. يرجى المحاولة مرة أخرى.');
-        }
-    } catch (error) {
-        console.error('Error:', error);
-        alert('حدث خطأ في الاتصال بالشبكة.');
+    if (response.ok && data.ok) {
+        return { ok: true, data };
     }
+
+    return { ok: false, error: data?.error || 'فشل إرسال الطلب' };
+} catch (error) {
+    console.error('Error:', error);
+    return { ok: false, error: 'حدث خطأ في الاتصال بالشبكة.' };
+}
 }
 
 const setupCheckoutForm = () => {
@@ -297,7 +303,7 @@ const setupCheckoutForm = () => {
    const orderTime = new Date().toLocaleString('ar-EG', { dateStyle: 'medium', timeStyle: 'short' });
 
    const message = `
-<b>🛒 طلب جديد من متجر أم حسين</b>
+<b>🛒 طلب جديد من متجر أم شهد</b>
 
 🕒 التاريخ: ${orderTime}
 👤 الاسم: ${name}
@@ -323,17 +329,17 @@ ${itemsText}
     }
 
     try {
-      const result = await submitOrderToTelegram(message);
+      const result = await submitOrderToTelegram(message, name, email, total);
 
       if (result?.ok) {
         saveLastOrder(name, total, cart);
         clearCart();
         window.location.href = 'success.html';
       } else {
-        throw new Error(result?.description || result?.error || 'فشل إرسال الطلب');
+        throw new Error(result?.error || 'فشل إرسال الطلب');
       }
     } catch (error) {
-      alert('حدث خطأ أثناء إرسال الطلب. يرجى المحاولة مرة أخرى.');
+      alert(error.message || 'حدث خطأ أثناء إرسال الطلب. يرجى المحاولة مرة أخرى.');
       console.error(error);
     } finally {
       if (submitButton) {
