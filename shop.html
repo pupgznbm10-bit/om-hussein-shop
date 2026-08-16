@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>المتجر | أم حسين</title>
+    <meta
+      name="description"
+      content="المتجر الخاص بأم حسين لبيع الخضار الطازج والمجمد بأسعار مناسبة وجودة عالية."
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800;900&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header class="topbar">
+      <div class="container nav-wrap">
+        <div class="brand" aria-label="أم حسين">
+          <span class="brand-mark">أم</span>
+          <span>حسين</span>
+        </div>
+        <nav class="main-nav" aria-label="التنقل الرئيسي">
+          <a href="index.html">الرئيسية</a>
+          <a href="shop.html">المتجر</a>
+          <a href="index.html#about">من نحن</a>
+          <a href="index.html#contact">تواصل معنا</a>
+        </nav>
+        <div class="nav-actions">
+          <a class="cart-link" href="cart.html" aria-label="السلة">
+            <span class="cart-icon">🛒</span>
+            <span class="cart-count">0</span>
+          </a>
+          <a class="cta-button" href="#products">تسوق الآن</a>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <section class="shop-page-hero section">
+        <div class="container shop-page-shell">
+          <p class="eyebrow">المتجر</p>
+          <h1>خضار طازج ومجمد بأفضل الأسعار</h1>
+          <p class="lead">
+            نُقدّم لك مزيجًا من الخضار النضرة والمجمدة المختارة بعناية، مع ضمان جودة
+            عالية وسعر مناسب لكل بيت. كل منتج في متجر أم حسين يتم اختياره بعناية لعائلتك.
+          </p>
+        </div>
+      </section>
+
+      <section class="shop section" id="products">
+        <div class="container">
+          <div class="shop-tabs" aria-label="فلاتر المنتجات">
+            <button class="tab-btn active" data-filter="all">الكل</button>
+            <button class="tab-btn" data-filter="fresh">طازج</button>
+            <button class="tab-btn" data-filter="frozen">مجمد</button>
+            <button class="tab-btn" data-filter="herbs">خضرة</button>
+          </div>
+
+          <div class="product-list">
+            <article class="product-item" data-category="fresh">
+              <span class="badge fresh">طازج</span>
+              <h3>كيلو الباذنجان المتقور</h3>
+              <p>مناسب للطبخ والسلطات.</p>
+              <div class="product-meta"><span>20 جنيه</span><button>أضف للسلة</button></div>
+            </article>
+
+            <article class="product-item" data-category="fresh">
+              <span class="badge fresh">طازج</span>
+              <h3>كيلو الكوسة المتقور</h3>
+              <p>خضار ناعم وطازج.</p>
+              <div class="product-meta"><span>30 جنيه</span><button>أضف للسلة</button></div>
+            </article>
+
+            <article class="product-item" data-category="fresh">
+              <span class="badge fresh">طازج</span>
+              <h3>كيلو الكوسة المقطع</h3>
+              <p>جاهز للطبخ بسهولة.</p>
+              <div class="product-meta"><span>25 جنيه</span><button>أضف للسلة</button></div>
+            </article>
+
+            <article class="product-item" data-category="fresh">
+              <span class="badge fresh">طازج</span>
+              <h3>كيلو الفاصوليا</h3>
+              <p>لون أخضر طبيعي ونكهة ممتازة.</p>
+              <div class="product-meta"><span>60 جنيه</span><button>أضف للسلة</button></div>
+            </article>
+
+            <article class="product-item" data-category="fresh">
+              <span class="badge fresh">طازج</span>
+              <h3>نصف الملوخية</h3>
+              <p>مذاق أصيل لطعامك اليومي.</p>
+              <div class="product-meta"><span>15 جنيه</span><button>أضف للسلة</button></div>
+            </article>
+
+            <article class="product-item" data-category="fresh">
+              <span class="badge fresh">طازج</span>
+              <h3>نصف ملوخية متخرطة</h3>
+              <p>جاهزة للطبخ بسرعة.</p>
+              <div class="product-meta"><span>20 جنيه</span><button>أضف للسلة</button></div>
+            </article>
+
+            <article class="product-item" data-category="fresh">
+              <span class="badge fresh">طازج</span>
+              <h3>كيلو ورق عنب فريش</h3>
+              <p>ورق عنب حار وجاهز للتجهيز.</p>
+              <div class="product-meta"><span>150 جنيه</span><button>أضف للسلة</button></div>
+            </article>
+
+            <article class="product-item" data-category="fresh">
+              <span class="badge fresh">طازج</span>
+              <h3>كيلو البامية</h3>
+              <p>خضار شهي ومناسب للأطباق الشعبية.</p>
+              <div class="product-meta"><span>80 جنيه</span><button>أضف للسلة</button></div>
+            </article>
+
+            <article class="product-item" data-category="fresh">
+              <span class="badge fresh">طازج</span>
+              <h3>كيلو الثوم</h3>
+              <p>رائحة قوية ونكهة ممتازة.</p>
+              <div class="product-meta"><span>80 جنيه</span><button>أضف للسلة</button></div>
+            </article>
+
+            <article class="product-item" data-category="fresh">
+              <span class="badge fresh">طازج</span>
+              <h3>طبق الفلفل الرومي المتقور نصف كيلو</h3>
+              <p>طازج ومناسب للسلطات.</p>
+              <div class="product-meta"><span>25 جنيه</span><button>أضف للسلة</button></div>
+            </article>
+
+            <article class="product-item" data-category="fresh">
+              <span class="badge fresh">طازج</span>
+              <h3>طبق فلفل رومي نصف كيلو</h3>
+              <p>فلفل طازج بنكهة مميزة.</p>
+              <div class="product-meta"><span>20 جنيه</span><button>أضف للسلة</button></div>
+            </article>
+
+            <article class="product-item" data-category="fresh">
+              <span class="badge fresh">طازج</span>
+              <h3>طبق الفلفل الحار الأخضر نصف كيلو</h3>
+              <p>للطهي وإضافة نكهة حارة.</p>
+              <div class="product-meta"><span>20 جنيه</span><button>أضف للسلة</button></div>
+            </article>
+
+            <article class="product-item" data-category="fresh">
+              <span class="badge fresh">طازج</span>
+              <h3>طبق الفلفل الحار الأحمر نصف كيلو</h3>
+              <p>لون جذاب ونكهة فاخرة.</p>
+              <div class="product-meta"><span>25 جنيه</span><button>أضف للسلة</button></div>
+            </article>
+
+            <article class="product-item" data-category="fresh">
+              <span class="badge fresh">طازج</span>
+              <h3>كيلو الكرنب</h3>
+              <p>خضار غني بالعناصر الغذائية.</p>
+              <div class="product-meta"><span>50 جنيه</span><button>أضف للسلة</button></div>
+            </article>
+
+            <article class="product-item" data-category="fresh">
+              <span class="badge fresh">طازج</span>
+              <h3>كيلو خضار مشكل (تورلي)</h3>
+              <p>مزيج ممتاز للأطباق اليومية.</p>
+              <div class="product-meta"><span>70 جنيه</span><button>أضف للسلة</button></div>
+            </article>
+
+            <article class="product-item" data-category="fresh">
+              <span class="badge fresh">طازج</span>
+              <h3>برطمان هريسة الشطة نصف كيلو</h3>
+              <p>نكهة لذيذة ومناسبة لكل المذاق.</p>
+              <div class="product-meta"><span>30 جنيه</span><button>أضف للسلة</button></div>
+            </article>
+
+            <article class="product-item" data-category="fresh">
+              <span class="badge fresh">طازج</span>
+              <h3>كيلو الطماطم صلصة</h3>
+              <p>مناسبة للصلصات والطبخ.</p>
+              <div class="product-meta"><span>30 جنيه</span><button>أضف للسلة</button></div>
+            </article>
+
+            <article class="product-item" data-category="herbs">
+              <span class="badge herbs">خضرة</span>
+              <h3>كيس خضرة للمحشى</h3>
+              <p>خضروات نضرة ومناسبة للتحضير.</p>
+              <div class="product-meta"><span>15 جنيه</span><button>أضف للسلة</button></div>
+            </article>
+
+            <article class="product-item" data-category="frozen">
+              <span class="badge frozen">مجمد</span>
+              <h3>طبق بطاطس متقورة</h3>
+              <p>جاهزة للفرن أو المقلي.</p>
+              <div class="product-meta"><span>35 جنيه</span><button>أضف للسلة</button></div>
+            </article>
+
+            <article class="product-item" data-category="fresh">
+              <span class="badge fresh">طازج</span>
+              <h3>طبق جزر متقطع نصف كيلو</h3>
+              <p>مقطع ومعد للطبخ السريع.</p>
+              <div class="product-meta"><span>20 جنيه</span><button>أضف للسلة</button></div>
+            </article>
+
+            <article class="product-item" data-category="fresh">
+              <span class="badge fresh">طازج</span>
+              <h3>كيلو البصل مفروم</h3>
+              <p>مجهز لك لتحضير الطعام بسهولة.</p>
+              <div class="product-meta"><span>25 جنيه</span><button>أضف للسلة</button></div>
+            </article>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer" id="contact">
+      <div class="container footer-wrap">
+        <div>
+          <div class="brand footer-brand">
+            <span class="brand-mark">أم</span>
+            <span>حسين</span>
+          </div>
+          <p>خضار طازج، نضارة يومية، وأسعار تضيف قيمة إلى كل بيت.</p>
+        </div>
+        <div class="footer-links">
+          <a href="index.html">الرئيسية</a>
+          <a href="shop.html">المتجر</a>
+          <a href="index.html#about">من نحن</a>
+        </div>
+      </div>
+    </footer>
+
+    <script src="script.js"></script>
+  </body>
+</html>

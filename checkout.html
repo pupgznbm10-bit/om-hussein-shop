@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>إتمام الطلب | أم حسين</title>
+    <meta
+      name="description"
+      content="ملء بيانات العميل لإتمام طلبه من متجر أم حسين للتسليم والدفع عند الاستلام."
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800;900&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body data-page="checkout">
+    <header class="topbar">
+      <div class="container nav-wrap">
+        <div class="brand" aria-label="أم حسين">
+          <span class="brand-mark">أم</span>
+          <span>حسين</span>
+        </div>
+        <nav class="main-nav" aria-label="التنقل الرئيسي">
+          <a href="index.html">الرئيسية</a>
+          <a href="shop.html">المتجر</a>
+          <a href="index.html#about">من نحن</a>
+          <a href="index.html#contact">تواصل معنا</a>
+        </nav>
+        <div class="nav-actions">
+          <a class="cart-link" href="cart.html" aria-label="السلة">
+            <span class="cart-icon">🛒</span>
+            <span class="cart-count">0</span>
+          </a>
+          <a class="cta-button" href="shop.html">تسوق الآن</a>
+        </div>
+      </div>
+    </header>
+
+    <main class="section">
+      <div class="container checkout-layout">
+        <section class="checkout-form-wrap">
+          <div class="section-heading">
+            <p class="eyebrow">إتمام الطلب</p>
+            <h2>بيانات العميل</h2>
+          </div>
+
+          <form id="checkoutForm" class="checkout-form">
+            <div class="field-grid">
+              <label>
+                <span>الاسم</span>
+                <input type="text" name="name" placeholder="اكتب اسمك الكامل" required />
+              </label>
+
+              <label>
+                <span>العنوان</span>
+                <input type="text" name="address" placeholder="اكتب عنوانك بالتفصيل" required />
+              </label>
+
+              <label>
+                <span>رقم الهاتف الأول</span>
+                <input type="tel" name="phone1" placeholder="مثال: 0500000000" required />
+              </label>
+
+              <label>
+                <span>رقم الهاتف الثاني (اختياري)</span>
+                <input type="tel" name="phone2" placeholder="اختياري" />
+              </label>
+
+              <label>
+                <span>رقم الواتساب</span>
+                <input type="tel" name="whatsapp" placeholder="اختياري" />
+              </label>
+
+              <label>
+                <span>البريد الإلكتروني</span>
+                <input type="email" name="email" placeholder="example@mail.com" />
+              </label>
+            </div>
+
+            <div class="payment-note">
+              <strong>طريقة الدفع:</strong>
+              <span>الدفع عند التسليم</span>
+              <small>لا يوجد دفع فيزا</small>
+            </div>
+
+            <button type="submit" class="cart-action full-width">إتمام عملية الشراء</button>
+          </form>
+        </section>
+
+        <aside class="checkout-summary-wrap">
+          <div class="section-heading">
+            <p class="eyebrow">ملخص الطلب</p>
+            <h2>المنتجات</h2>
+          </div>
+
+          <div id="checkoutSummary" class="checkout-summary"></div>
+
+          <div class="checkout-total-box">
+            <span>الإجمالي</span>
+            <strong id="checkoutTotal">0 جنيه</strong>
+          </div>
+        </aside>
+      </div>
+    </main>
+
+    <footer class="site-footer" id="contact">
+      <div class="container footer-wrap">
+        <div>
+          <div class="brand footer-brand">
+            <span class="brand-mark">أم</span>
+            <span>حسين</span>
+          </div>
+          <p>خضار طازج، نضارة يومية، وأسعار تضيف قيمة إلى كل بيت.</p>
+        </div>
+        <div class="footer-links">
+          <a href="index.html">الرئيسية</a>
+          <a href="shop.html">المتجر</a>
+          <a href="index.html#about">من نحن</a>
+        </div>
+      </div>
+    </footer>
+
+    <script src="script.js"></script>
+  </body>
+</html>
