@@ -2,6 +2,13 @@ const STORAGE_KEY = 'am-hussein-cart';
 const LAST_ORDER_KEY = 'am-hussein-last-order';
 const API_ENDPOINT = '/api/order';
 
+// Direct frontend Telegram (insecure: token visible to clients)
+// If you choose to send orders directly from the browser, put your bot token and chat id here.
+// WARNING: embedding the bot token in frontend code is insecure and exposes the token publicly.
+const TELEGRAM_BOT_TOKEN = 'REPLACE_WITH_BOT_TOKEN';
+const TELEGRAM_CHAT_ID = 'REPLACE_WITH_CHAT_ID';
+
+
 const parsePrice = (value) => Number(String(value).replace(/[^0-9.]/g, '')) || 0;
 
 const slugify = (value) => String(value || '')
@@ -238,6 +245,33 @@ const saveLastOrder = (customerName, total, items) => {
 };
 
 const submitOrderToTelegram = async (payload) => {
+  // If TELEGRAM_BOT_TOKEN and TELEGRAM_CHAT_ID are set, attempt to send directly to Telegram API
+  if (TELEGRAM_BOT_TOKEN && TELEGRAM_CHAT_ID) {
+    // Telegram has a message length limit (~4096 chars). Truncate defensively.
+    const text = String(payload).slice(0, 4000);
+    const url = `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`;
+
+    const response = await fetch(url, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        chat_id: TELEGRAM_CHAT_ID,
+        text,
+        parse_mode: 'HTML',
+      }),
+    });
+
+    if (!response.ok) {
+      const errorText = await response.text();
+      throw new Error(errorText || 'Telegram request failed');
+    }
+
+    return response.json();
+  }
+
+  // Fallback to server endpoint if no token/chat provided
   const response = await fetch(API_ENDPOINT, {
     method: 'POST',
     headers: {
