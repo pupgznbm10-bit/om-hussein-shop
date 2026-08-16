@@ -242,27 +242,22 @@ async function submitOrderToTelegram(orderDetails) {
     try {
         const response = await fetch('/api/send-order', {
             method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
+            headers: { 
+                'Content-Type': 'application/json' 
             },
             body: JSON.stringify({ message: orderDetails })
         });
 
-        const data = await response.json().catch(() => ({}));
+        const data = await response.json();
 
-        if (response.ok) {
+        if (response.ok && data.success) {
             alert('تم إرسال الطلب بنجاح!');
-            return { ok: true, ...data };
+        } else {
+            alert('حدث خطأ أثناء إرسال الطلب. يرجى المحاولة مرة أخرى.');
         }
-
-        const errorMessage = data?.error || data?.details?.description || 'حدث خطأ أثناء إرسال الطلب. يرجى المحاولة مرة أخرى.';
-        console.error('Order submit failed:', data);
-        alert(errorMessage);
-        return { ok: false, ...data };
     } catch (error) {
         console.error('Error:', error);
         alert('حدث خطأ في الاتصال بالشبكة.');
-        return { ok: false, error: error.message };
     }
 }
 
