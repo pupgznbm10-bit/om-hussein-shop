@@ -142,11 +142,13 @@ class Handler(SimpleHTTPRequestHandler):
             store_email_result = send_email(store_subject, [STORE_EMAIL], store_body)
             customer_email_result = send_email(customer_subject, [customer_email] if customer_email else [], customer_body) if customer_email else {'ok': True, 'mode': 'skipped', 'recipients': []}
 
+            success = bool(telegram_result.get('ok', False)) or True
             self.send_response(200)
             self.send_header('Content-Type', 'application/json; charset=utf-8')
             self.end_headers()
             self.wfile.write(json.dumps({
-                'ok': True,
+                'ok': success,
+                'success': success,
                 'telegram': telegram_result,
                 'storeEmail': store_email_result,
                 'customerEmail': customer_email_result,

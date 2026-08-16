@@ -240,31 +240,32 @@ const saveLastOrder = (customerName, total, items) => {
 
 async function submitOrderToTelegram(orderDetails, customerName, customerEmail, total) {
     try {
-        const response = await fetch('/api/send-order', {
-            method: 'POST',
+      const response = await fetch('/api/send-order', {
+        method: 'POST',
         headers: {
-            'Content-Type': 'application/json'
-            },
+          'Content-Type': 'application/json'
+        },
         body: JSON.stringify({
-            message: orderDetails,
-            customerName,
-            customerEmail,
-            orderTotal: total,
-            orderDetails: orderDetails
+          message: orderDetails,
+          customerName,
+          customerEmail,
+          orderTotal: total,
+          orderDetails: orderDetails
         })
-    });
+      });
 
-    const data = await response.json();
+      const data = await response.json().catch(() => ({}));
+      const success = response.ok && (data.ok === true || data.success === true || data.telegram?.ok === true || data.result?.ok === true);
 
-    if (response.ok && data.ok) {
+      if (success) {
         return { ok: true, data };
-    }
+      }
 
-    return { ok: false, error: data?.error || 'فشل إرسال الطلب' };
-} catch (error) {
-    console.error('Error:', error);
-    return { ok: false, error: 'حدث خطأ في الاتصال بالشبكة.' };
-}
+      return { ok: false, error: data?.error || 'فشل في إرسال الطلب' };
+    } catch (error) {
+      console.error('Error:', error);
+      return { ok: false, error: 'فشل في إرسال الطلب' };
+    }
 }
 
 const setupCheckoutForm = () => {
@@ -332,14 +333,16 @@ ${itemsText}
       const result = await submitOrderToTelegram(message, name, email, total);
 
       if (result?.ok) {
+        alert('تم إرسال الطلب بنجاح');
         saveLastOrder(name, total, cart);
         clearCart();
         window.location.href = 'success.html';
-      } else {
-        throw new Error(result?.error || 'فشل إرسال الطلب');
+        return;
       }
+
+      alert(result?.error || 'فشل في إرسال الطلب');
     } catch (error) {
-      alert(error.message || 'حدث خطأ أثناء إرسال الطلب. يرجى المحاولة مرة أخرى.');
+      alert('فشل في إرسال الطلب');
       console.error(error);
     } finally {
       if (submitButton) {
