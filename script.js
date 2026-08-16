@@ -2,13 +2,6 @@ const STORAGE_KEY = 'am-hussein-cart';
 const LAST_ORDER_KEY = 'am-hussein-last-order';
 const API_ENDPOINT = '/api/order';
 
-// Choose the delivery mode.
-// 'server' is the recommended mode because it keeps the bot token off the browser and avoids CORS issues.
-// 'direct' can be used for testing only; it makes the bot token visible to all users in the browser.
-const TELEGRAM_MODE = 'server';
-const TELEGRAM_BOT_TOKEN = 'REPLACE_WITH_BOT_TOKEN';
-const TELEGRAM_CHAT_ID = 'REPLACE_WITH_CHAT_ID';
-
 
 const parsePrice = (value) => Number(String(value).replace(/[^0-9.]/g, '')) || 0;
 
@@ -246,31 +239,7 @@ const saveLastOrder = (customerName, total, items) => {
 };
 
 const submitOrderToTelegram = async (payload) => {
-  if (TELEGRAM_MODE === 'direct' && TELEGRAM_BOT_TOKEN && TELEGRAM_CHAT_ID && TELEGRAM_BOT_TOKEN !== 'REPLACE_WITH_BOT_TOKEN' && TELEGRAM_CHAT_ID !== 'REPLACE_WITH_CHAT_ID') {
-    const text = String(payload).slice(0, 4000);
-    const url = `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`;
-
-    const response = await fetch(url, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        chat_id: TELEGRAM_CHAT_ID,
-        text,
-        parse_mode: 'HTML',
-      }),
-    });
-
-    if (!response.ok) {
-      const errorText = await response.text();
-      throw new Error(errorText || 'Telegram request failed');
-    }
-
-    return response.json();
-  }
-
-  const response = await fetch(API_ENDPOINT, {
+  const response = await fetch('/api/send-order', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',

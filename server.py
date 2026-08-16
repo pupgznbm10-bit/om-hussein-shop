@@ -33,7 +33,8 @@ class Handler(SimpleHTTPRequestHandler):
         super().__init__(*args, directory=BASE_DIR, **kwargs)
 
     def do_POST(self):
-        if self.path == '/api/order':
+        endpoint = self.path.split('?', 1)[0]
+        if endpoint in ('/api/order', '/api/send-order'):
             length = int(self.headers.get('Content-Length', '0'))
             raw = self.rfile.read(length) if length else b''
 

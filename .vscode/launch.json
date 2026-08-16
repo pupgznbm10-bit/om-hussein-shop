@@ -1,0 +1,19 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Run shop in Chrome",
+      "type": "debugpy",
+      "request": "launch",
+      "program": "${workspaceFolder}/server.py",
+      "cwd": "${workspaceFolder}",
+      "console": "integratedTerminal",
+      "justMyCode": false,
+      "serverReadyAction": {
+        "pattern": "Serving on http://0.0.0.0:3000",
+        "uriFormat": "http://localhost:3000",
+        "action": "debugWithChrome"
+      }
+    }
+  ]
+}
