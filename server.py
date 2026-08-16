@@ -9,7 +9,7 @@ from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 from urllib import request
 
-PORT = int(os.environ.get('PORT', 3000))
+PORT = int(os.environ.get('PORT', 8000))
 BOT_TOKEN = os.environ.get('BOT_TOKEN', '8823136507:AAEqb30mMHpuOr5hwWEOFcXp8JHNjC3GaaU')
 CHAT_ID = os.environ.get('CHAT_ID', '1267575587')
 STORE_EMAIL = os.environ.get('STORE_EMAIL', 'mw01551687704@gmail.com')
