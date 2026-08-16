@@ -238,22 +238,26 @@ const saveLastOrder = (customerName, total, items) => {
   }));
 };
 
-const submitOrderToTelegram = async (payload) => {
-  const response = await fetch('/api/send-order', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({ message: payload }),
-  });
+async function submitOrderToTelegram(orderDetails) {
+    try {
+        const response = await fetch('/api/send-order', {
+            method: 'POST',
+            headers: { 
+                'Content-Type': 'application/json' 
+            },
+            body: JSON.stringify({ message: orderDetails })
+        });
 
-  if (!response.ok) {
-    const errorText = await response.text();
-    throw new Error(errorText || 'Request failed');
-  }
-
-  return response.json();
-};
+        if (response.ok) {
+            alert('تم إرسال الطلب بنجاح!');
+        } else {
+            alert('حدث خطأ أثناء إرسال الطلب. يرجى المحاولة مرة أخرى.');
+        }
+    } catch (error) {
+        console.error('Error:', error);
+        alert('حدث خطأ في الاتصال بالشبكة.');
+    }
+}
 
 const setupCheckoutForm = () => {
   const form = document.querySelector('#checkoutForm');
