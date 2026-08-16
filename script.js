@@ -255,8 +255,9 @@ async function submitOrderToTelegram(orderDetails) {
             return { ok: true, ...data };
         }
 
+        const errorMessage = data?.error || data?.details?.description || 'حدث خطأ أثناء إرسال الطلب. يرجى المحاولة مرة أخرى.';
         console.error('Order submit failed:', data);
-        alert('حدث خطأ أثناء إرسال الطلب. يرجى المحاولة مرة أخرى.');
+        alert(errorMessage);
         return { ok: false, ...data };
     } catch (error) {
         console.error('Error:', error);
