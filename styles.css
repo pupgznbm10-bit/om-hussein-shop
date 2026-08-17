@@ -69,6 +69,76 @@ button {
   font-size: clamp(1.6rem, 1.8vw, 2.4rem);
   font-weight: 800;
   color: var(--green-900);
+  cursor: pointer;
+  perspective: 1200px;
+}
+
+.brand span {
+  display: inline-block;
+  transition: all 0.3s ease;
+  transform-style: preserve-3d;
+}
+
+.brand:hover span {
+  animation: typing3d 0.6s ease-in-out;
+}
+
+.brand:hover .brand-mark {
+  animation: typing3d-box 0.6s ease-in-out;
+}
+
+@keyframes typing3d {
+  0% {
+    transform: rotateX(0deg) rotateY(0deg) translateZ(0);
+    opacity: 1;
+  }
+  20% {
+    transform: rotateX(-20deg) rotateY(-25deg) translateZ(-15px);
+    opacity: 0.6;
+  }
+  40% {
+    transform: rotateX(20deg) rotateY(25deg) translateZ(15px);
+    opacity: 0.4;
+  }
+  60% {
+    transform: rotateX(-15deg) rotateY(-15deg) translateZ(-10px);
+    opacity: 0.6;
+  }
+  80% {
+    transform: rotateX(10deg) rotateY(10deg) translateZ(8px);
+    opacity: 0.8;
+  }
+  100% {
+    transform: rotateX(0deg) rotateY(0deg) translateZ(0);
+    opacity: 1;
+  }
+}
+
+@keyframes typing3d-box {
+  0% {
+    transform: rotateX(0deg) rotateY(0deg) rotateZ(0deg) translateZ(0);
+    box-shadow: var(--shadow);
+  }
+  20% {
+    transform: rotateX(-20deg) rotateY(-25deg) rotateZ(-8deg) translateZ(-12px);
+    box-shadow: 0 15px 35px rgba(255, 105, 180, 0.35);
+  }
+  40% {
+    transform: rotateX(20deg) rotateY(25deg) rotateZ(8deg) translateZ(12px);
+    box-shadow: 0 18px 45px rgba(255, 105, 180, 0.45);
+  }
+  60% {
+    transform: rotateX(-15deg) rotateY(-15deg) rotateZ(-5deg) translateZ(-8px);
+    box-shadow: 0 14px 32px rgba(255, 105, 180, 0.35);
+  }
+  80% {
+    transform: rotateX(10deg) rotateY(10deg) rotateZ(3deg) translateZ(6px);
+    box-shadow: 0 12px 28px rgba(255, 105, 180, 0.3);
+  }
+  100% {
+    transform: rotateX(0deg) rotateY(0deg) rotateZ(0deg) translateZ(0);
+    box-shadow: var(--shadow);
+  }
 }
 
 .brand-mark {
@@ -81,6 +151,8 @@ button {
   background: linear-gradient(135deg, var(--green-700), var(--green-500));
   color: white;
   box-shadow: var(--shadow);
+  transition: all 0.3s ease;
+  transform-style: preserve-3d;
 }
 
 .main-nav {
@@ -339,6 +411,14 @@ button {
   border-radius: 16px;
   background: linear-gradient(135deg, var(--green-200), rgba(255, 255, 255, 0.5));
   font-size: 1.9rem;
+  transition: background 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease;
+  cursor: pointer;
+}
+
+.icon:hover {
+  background: linear-gradient(135deg, rgba(255, 192, 203, 0.4), rgba(255, 218, 224, 0.6));
+  box-shadow: 0 8px 20px rgba(255, 105, 180, 0.25);
+  transform: scale(1.08);
 }
 
 .feature-item h3 {
