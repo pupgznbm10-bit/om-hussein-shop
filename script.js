@@ -107,6 +107,19 @@ const setupProductCards = () => {
       qtyWrap.innerHTML = '<span>كجم</span><input type="number" min="1" step="1" value="1" aria-label="الكمية المطلوبة بالكيلو" class="qty-box" />';
       meta.insertBefore(qtyWrap, meta.querySelector('button'));
     }
+
+    item.addEventListener('pointermove', (event) => {
+      const rect = item.getBoundingClientRect();
+      const rotateY = ((event.clientX - rect.left) / rect.width - 0.5) * 10;
+      const rotateX = (0.5 - (event.clientY - rect.top) / rect.height) * 10;
+      item.style.transform = `perspective(1200px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateY(-4px)`;
+      item.style.boxShadow = '0 22px 44px rgba(26, 45, 37, 0.12)';
+    });
+
+    item.addEventListener('pointerleave', () => {
+      item.style.transform = '';
+      item.style.boxShadow = '';
+    });
   });
 
   document.body.addEventListener('click', (event) => {
@@ -132,6 +145,73 @@ const setupProductCards = () => {
       price,
       qty: Number.isFinite(qty) && qty > 0 ? qty : 1,
     });
+
+    button.classList.remove('added');
+    void button.offsetWidth;
+    button.classList.add('added');
+    button.textContent = '✓ تم';
+
+    showToast(`${name} أضيف إلى السلة`);
+
+    window.setTimeout(() => {
+      button.classList.remove('added');
+      button.textContent = 'أضف للسلة';
+    }, 900);
+  });
+};
+
+const showToast = (message) => {
+  let toastContainer = document.querySelector('.toast-container');
+  if (!toastContainer) {
+    toastContainer = document.createElement('div');
+    toastContainer.className = 'toast-container';
+    document.body.appendChild(toastContainer);
+  }
+
+  const toast = document.createElement('div');
+  toast.className = 'toast';
+  toast.textContent = message;
+  toastContainer.appendChild(toast);
+
+  window.setTimeout(() => {
+    toast.classList.add('show');
+  }, 10);
+
+  window.setTimeout(() => {
+    toast.classList.remove('show');
+    toast.classList.add('hide');
+    window.setTimeout(() => toast.remove(), 300);
+  }, 2200);
+};
+
+const setupSkeletonLoaders = () => {
+  const lists = document.querySelectorAll('.product-list');
+
+  lists.forEach((list) => {
+    if (list.querySelector('.product-skeletons')) {
+      return;
+    }
+
+    const skeletonCount = Math.min(4, list.children.length || 4);
+    const skeletons = Array.from({ length: skeletonCount }, () => `
+      <div class="product-skeletons__card">
+        <div class="skeleton skeleton-badge"></div>
+        <div class="skeleton skeleton-title"></div>
+        <div class="skeleton skeleton-text"></div>
+        <div class="skeleton skeleton-meta"></div>
+      </div>
+    `).join('');
+
+    const skeletonWrap = document.createElement('div');
+    skeletonWrap.className = 'product-skeletons';
+    skeletonWrap.innerHTML = skeletons;
+    list.appendChild(skeletonWrap);
+    list.classList.add('is-loading');
+
+    window.setTimeout(() => {
+      list.classList.remove('is-loading');
+      skeletonWrap.remove();
+    }, 600);
   });
 };
 
@@ -683,8 +763,62 @@ const renderSuccessPage = () => {
   }
 };
 
+const setupBrandAnimations = () => {
+  const brandLinks = document.querySelectorAll('.brand');
+
+  brandLinks.forEach((brand) => {
+    brand.addEventListener('click', () => {
+      brand.classList.remove('brand-bounce');
+      void brand.offsetWidth;
+      brand.classList.add('brand-bounce');
+      window.setTimeout(() => brand.classList.remove('brand-bounce'), 600);
+    });
+  });
+};
+
+const setupScrollEffects = () => {
+  const header = document.querySelector('.topbar');
+  if (header) {
+    const updateHeaderState = () => {
+      const scrollTop = Math.max(
+        window.scrollY || 0,
+        window.pageYOffset || 0,
+        document.documentElement?.scrollTop || 0,
+        document.body?.scrollTop || 0
+      );
+      header.classList.toggle('scrolled', scrollTop > 12);
+    };
+
+    updateHeaderState();
+    window.addEventListener('scroll', updateHeaderState, { passive: true });
+    document.addEventListener('scroll', updateHeaderState, { passive: true });
+  }
+
+  const revealItems = document.querySelectorAll('.feature-item, .product-item, .hero-copy, .hero-visual, .about-copy, .about-image, .shop-page-shell');
+  if ('IntersectionObserver' in window) {
+    const revealObserver = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          revealObserver.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.15 });
+
+    revealItems.forEach((item) => {
+      item.classList.add('reveal-item');
+      revealObserver.observe(item);
+    });
+  } else {
+    revealItems.forEach((item) => item.classList.add('visible'));
+  }
+};
+
 const init = () => {
   updateCartBadge();
+  setupBrandAnimations();
+  setupScrollEffects();
+  setupSkeletonLoaders();
   setupProductCards();
   setupFilters();
   bindCartActions();
