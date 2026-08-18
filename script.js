@@ -640,8 +640,9 @@ const setupCheckoutForm = () => {
    const whatsapp = normalizePhoneNumber(formData.get('whatsapp'));
    const email = String(formData.get('email') || '').trim();
 
-   if (!name || !address) {
-     alert('يرجى تعبئة الاسم والعنوان');
+   if (!name || !address || address.length < 5) {
+     alert('يرجى إدخال عنوان صحيح، ولا يقل عن 5 أحرف.');
+     form.querySelector('[name="address"]').focus();
      return;
    }
 
