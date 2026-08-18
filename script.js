@@ -346,7 +346,9 @@ const loadSavedCustomerInfo = () => {
   });
 };
 
-const saveLastOrder = (customerName, total, items, customerInfo = {}) => {
+const generateOrderCode = () => String(Math.floor(1000 + Math.random() * 9000));
+
+const saveLastOrder = (customerName, total, items, customerInfo = {}, orderCode = generateOrderCode()) => {
   localStorage.setItem(LAST_ORDER_KEY, JSON.stringify({
     customerName,
     total,
@@ -356,9 +358,14 @@ const saveLastOrder = (customerName, total, items, customerInfo = {}) => {
     customerPhone2: customerInfo.phone2 || '',
     customerWhatsapp: customerInfo.whatsapp || '',
     customerEmail: customerInfo.email || '',
+    orderCode,
     createdAt: new Date().toISOString(),
   }));
 };
+
+const normalizePhoneNumber = (value) => String(value || '').replace(/\D+/g, '');
+
+const isValidPhoneNumber = (value) => /^\d{11}$/.test(normalizePhoneNumber(value));
 
 const buildInvoiceHtml = (order) => {
   const items = Array.isArray(order?.items) ? order.items : [];
@@ -375,6 +382,7 @@ const buildInvoiceHtml = (order) => {
   const customerName = order?.customerName || 'عميل';
   const customerAddress = order?.customerAddress || 'غير محدد';
   const customerPhone = order?.customerPhone || 'غير محدد';
+  const orderCode = order?.orderCode || '0000';
 
   return `<!DOCTYPE html>
     <html lang="ar" dir="rtl">
@@ -485,6 +493,7 @@ const buildInvoiceHtml = (order) => {
             <div>اسم العميل: ${customerName}</div>
             <div>رقم الهاتف: ${customerPhone}</div>
             <div>العنوان: ${customerAddress}</div>
+            <div>رقم الطلب: ${orderCode}</div>
             <div>تاريخ الطلب: ${new Date().toLocaleString('ar-EG', { dateStyle: 'medium', timeStyle: 'short' })}</div>
           </div>
 
@@ -603,6 +612,13 @@ const setupCheckoutForm = () => {
      return;
    }
 
+   if (['phone1', 'phone2', 'whatsapp'].includes(name)) {
+     const digitsOnly = value.replace(/\D/g, '').slice(0, 11);
+     target.value = digitsOnly;
+     saveCustomerInfo({ [name]: digitsOnly });
+     return;
+   }
+
    saveCustomerInfo({ [name]: value.trim() });
  });
 
@@ -619,13 +635,31 @@ const setupCheckoutForm = () => {
 
    const name = String(formData.get('name') || '').trim();
    const address = String(formData.get('address') || '').trim();
-   const phone1 = String(formData.get('phone1') || '').trim();
-   const phone2 = String(formData.get('phone2') || '').trim();
-   const whatsapp = String(formData.get('whatsapp') || '').trim();
+   const phone1 = normalizePhoneNumber(formData.get('phone1'));
+   const phone2 = normalizePhoneNumber(formData.get('phone2'));
+   const whatsapp = normalizePhoneNumber(formData.get('whatsapp'));
    const email = String(formData.get('email') || '').trim();
 
-   if (!name || !address || !phone1) {
-     alert('يرجى تعبئة الاسم، العنوان، ورقم الهاتف الأول');
+   if (!name || !address) {
+     alert('يرجى تعبئة الاسم والعنوان');
+     return;
+   }
+
+   if (!phone1 || !isValidPhoneNumber(phone1)) {
+     alert('يرجى إدخال رقم الهاتف الأول بشكل صحيح، بحيث يكون 11 رقمًا.');
+     form.querySelector('[name="phone1"]').focus();
+     return;
+   }
+
+   if (!whatsapp || !isValidPhoneNumber(whatsapp)) {
+     alert('يرجى إدخال رقم الواتساب بشكل صحيح، بحيث يكون 11 رقمًا.');
+     form.querySelector('[name="whatsapp"]').focus();
+     return;
+   }
+
+   if (phone2 && !isValidPhoneNumber(phone2)) {
+     alert('يرجى إدخال رقم الهاتف الثاني بشكل صحيح، أو تركه فارغًا.');
+     form.querySelector('[name="phone2"]').focus();
      return;
    }
 
@@ -635,27 +669,28 @@ const setupCheckoutForm = () => {
    const total = cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
    const itemsText = cart.map((item) => `- ${item.name}: ${item.qty} كجم × ${item.price} = ${item.price * item.qty} جنيه`).join('\n');
    const orderTime = new Date().toLocaleString('ar-EG', { dateStyle: 'medium', timeStyle: 'short' });
+   const orderCode = generateOrderCode();
 
    const message = `
-<b>🛒 طلب جديد من متجر أم شهد</b>
- 
-🕒 التاريخ: ${orderTime}
-👤 الاسم: ${name}
-📍 العنوان: ${address}
-📞 رقم الهاتف 1: ${phone1}
-📞 رقم الهاتف 2: ${phone2 || 'غير موجود'}
-💬 واتساب: ${whatsapp || 'غير موجود'}
-✉️ البريد الإلكتروني: ${email || 'غير موجود'}
- 
-<b>📦 تفاصيل الطلب:</b>
-${itemsText}
- 
-<b>💰 الإجمالي:</b> ${formatCurrency(total)}
- 
-<b>💳 طريقة الدفع:</b> الدفع عند التسليم
-<b>🧾 ملاحظات:</b> لا يوجد دفع فيزا، ويتم الدفع نقدًا عند الاستلام.
-`;
-
+   <b>🛒 طلب جديد من متجر أم شهد</b>
+  
+   🕒 التاريخ: ${orderTime}
+   🔢 رقم الطلب: ${orderCode}
+   👤 الاسم: ${name}
+   📍 العنوان: ${address}
+   📞 رقم الهاتف 1: ${phone1}
+   📞 رقم الهاتف 2: ${phone2 || 'غير موجود'}
+   💬 واتساب: ${whatsapp || 'غير موجود'}
+   ✉️ البريد الإلكتروني: ${email || 'غير موجود'}
+  
+   <b>📦 تفاصيل الطلب:</b>
+   ${itemsText}
+  
+   <b>💰 الإجمالي:</b> ${formatCurrency(total)}
+  
+   <b>💳 طريقة الدفع:</b> الدفع عند التسليم
+   <b>🧾 ملاحظات:</b> لا يوجد دفع فيزا، ويتم الدفع نقدًا عند الاستلام.
+   `;
    const submitButton = form.querySelector('button[type="submit"]');
    if (submitButton) {
      submitButton.disabled = true;
@@ -667,7 +702,7 @@ ${itemsText}
 
      if (result?.ok) {
        alert('تم إرسال الطلب بنجاح');
-       saveLastOrder(name, total, cart, customerInfo);
+       saveLastOrder(name, total, cart, customerInfo, orderCode);
        clearCart();
        window.location.href = 'success.html';
        return;
@@ -741,6 +776,7 @@ const renderSuccessPage = () => {
       <div class="success-summary-box">
         <p class="success-label">اسم العميل</p>
         <h3>${lastOrder.customerName}</h3>
+        <p class="success-small-meta">رقم الطلب: ${lastOrder.orderCode || '0000'}</p>
         <p class="success-small-meta">العنوان: ${lastOrder.customerAddress || 'غير محدد'}</p>
         <p class="success-small-meta">الهاتف: ${lastOrder.customerPhone || 'غير محدد'}</p>
         <ul class="success-order-list">${itemsHtml}</ul>

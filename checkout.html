@@ -61,17 +61,43 @@
 
               <label>
                 <span>رقم الهاتف الأول</span>
-                <input type="tel" name="phone1" placeholder="مثال: 0500000000" required />
+                <input
+                  type="tel"
+                  name="phone1"
+                  placeholder="مثال: 01012345678"
+                  required
+                  inputmode="numeric"
+                  minlength="11"
+                  maxlength="11"
+                  pattern="[0-9]{11}"
+                />
               </label>
 
               <label>
                 <span>رقم الهاتف الثاني (اختياري)</span>
-                <input type="tel" name="phone2" placeholder="اختياري" />
+                <input
+                  type="tel"
+                  name="phone2"
+                  placeholder="اختياري"
+                  inputmode="numeric"
+                  minlength="11"
+                  maxlength="11"
+                  pattern="[0-9]{11}"
+                />
               </label>
 
               <label>
                 <span>رقم الواتساب</span>
-                <input type="tel" name="whatsapp" placeholder="اختياري" />
+                <input
+                  type="tel"
+                  name="whatsapp"
+                  placeholder="مثال: 01012345678"
+                  required
+                  inputmode="numeric"
+                  minlength="11"
+                  maxlength="11"
+                  pattern="[0-9]{11}"
+                />
               </label>
 
               <label>
